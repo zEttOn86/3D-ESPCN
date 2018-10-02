@@ -1,0 +1,10 @@
+data/processed/LR/0010.mhd	data/processed/HR/0010.mhd
+data/processed/LR/0004.mhd	data/processed/HR/0004.mhd
+data/processed/LR/0003.mhd	data/processed/HR/0003.mhd
+data/processed/LR/0008.mhd	data/processed/HR/0008.mhd
+data/processed/LR/0011.mhd	data/processed/HR/0011.mhd
+data/processed/LR/0013.mhd	data/processed/HR/0013.mhd
+data/processed/LR/0005.mhd	data/processed/HR/0005.mhd
+data/processed/LR/0009.mhd	data/processed/HR/0009.mhd
+data/processed/LR/0002.mhd	data/processed/HR/0002.mhd
+data/processed/LR/0007.mhd	data/processed/HR/0007.mhd
