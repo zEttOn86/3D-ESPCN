@@ -64,7 +64,7 @@ def main():
 
     # Set up a neural network to train
     print ('Set up a neural network to train')
-    gen = ESPCN()
+    gen = ESPCN(r=config.upsampling_rate)
 
     if args.gpu >= 0:
         chainer.cuda.get_device_from_id(args.gpu).use()
@@ -108,6 +108,8 @@ def main():
             os.path.join(base_dir, config.updater['fn']), result_dir)
         copy_to_result_dir(
             os.path.join(base_dir, config.dataset['training_fn']), result_dir)
+        copy_to_result_dir(
+            os.path.join(base_dir, config.dataset['val_fn']), result_dir)
 
     create_result_dir(args.base,  args.out, args.config_path, config)
 
