@@ -18,6 +18,7 @@ sys.path.append(os.path.dirname(__file__))
 from model import ESPCN
 from updater import EspcnUpdater
 from dataset import EspcnDataset
+from evaluator import EspcnEvaluator
 import util.yaml_utils as yaml_utils
 
 def main():
@@ -51,10 +52,15 @@ def main():
 
     #load the dataset
     print ("load the dataset")
-    train = SrganDataset(args.root,
+    train = EspcnDataset(args.root,
                         os.path.join(args.base, config.dataset['training_fn']),
-                        config.patch['patchside'])
+                        config.patch['patchside'], config.upsampling_rate)
     train_iter = chainer.iterators.SerialIterator(train, batch_size=config.batchsize)
+
+    val = EspcnDataset(args.root,
+                        os.path.join(args.base, config.dataset['val_fn']),
+                        config.patch['patchside'], config.upsampling_rate)
+    val_iter = chainer.iterators.SerialIterator(val, batch_size=config.batchsize, repeat=False, shuffle=False)
 
     # Set up a neural network to train
     print ('Set up a neural network to train')
@@ -112,16 +118,19 @@ def main():
     # Set up logging
     snapshot_interval = (config.snapshot_interval, 'iteration')
     display_interval = (config.display_interval, 'iteration')
-
+    evaluation_interval = (config.evaluation_interval, 'iteration')
     trainer.extend(extensions.snapshot(filename='snapshot_iter_{.updater.iteration}.npz'),trigger=snapshot_interval)
     trainer.extend(extensions.snapshot_object(gen, filename='gen_iter_{.updater.iteration}.npz'), trigger=snapshot_interval)
     # Write a log of evaluation statistics for each epoch
     trainer.extend(extensions.LogReport(trigger=display_interval))
     # Print a progress bar to stdout
     trainer.extend(extensions.ProgressBar(update_interval=10))
+    # Evaluate the model with the test dataset for each epoch
+    trainer.extend(EspcnEvaluator(val_iter, gen, device=args.gpu), trigger=evaluation_interval)
+
     # Save two plot images to the result dir
     if extensions.PlotReport.available():
-        trainer.extend(extensions.PlotReport(['loss'], 'iteration', file_name='gen_loss.png', trigger=display_interval))
+        trainer.extend(extensions.PlotReport(['loss', 'val/loss'], 'iteration', file_name='gen_loss.png', trigger=display_interval))
 
     if args.resume:
         # Resume from a snapshot
