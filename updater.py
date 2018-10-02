@@ -18,7 +18,7 @@ class EspcnUpdater(chainer.training.StandardUpdater):
         gen_optimizer = self.get_optimizer('gen')
 
         batch = self.get_iterator("main").next()#iterator
-        x, t = self.converter(batch, self.device)
+        x, t = self.converter(batch, self.device) #x: input, t: true
 
         gen = self.gen
         y = gen(x)
