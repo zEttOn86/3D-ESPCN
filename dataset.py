@@ -6,15 +6,16 @@
 import os, sys, time
 import numpy as np
 import chainer
+import util.dataIO as IO
 
 class EspcnDataset(chainer.dataset.DatasetMixin):
     def __init__(self, root, data_list_txt, hr_patch_side, upsampling_rate, augmentation=False):
         print(' Initialize dataset')
         self._root = root
-        self._patch_side = patch_side
+        self._patch_side = hr_patch_side
         self.upsampling_rate = upsampling_rate
         self._augmentation = augmentation
-
+        self._max_batchsize = 500
         assert(self._patch_side%2==0 and self._patch_side%self.upsampling_rate==0)
 
         self._lr_patch_side = self._patch_side // self.upsampling_rate
@@ -40,16 +41,16 @@ class EspcnDataset(chainer.dataset.DatasetMixin):
             # Read data
             lr_img = IO.read_mhd_and_raw(os.path.join(self._root, i[0])).astype("float32")
             #(z, y, x) -> (ch, z, y, x) and norm [0, 1]
-            lr_img = (lr_img[np.newaxis, :] - min(lr_img)) / (max(lr_img)- min(lr_img))
+            lr_img = (lr_img[np.newaxis, :] - np.amin(lr_img)) / (np.amax(lr_img)- np.amin(lr_img))
 
-            hr_img = IO.read_mhd_and_raw(os.path.join(self._root, i[1]))
-            hr_img = ((hr_img[np.newaxis, :] - min(hr_img)) / (max(hr_img)- min(hr_img))*2)-1
+            hr_img = IO.read_mhd_and_raw(os.path.join(self._root, i[1])).astype("float32")
+            hr_img = ((hr_img[np.newaxis, :] - np.amin(hr_img)) / (np.amax(hr_img)- np.amin(hr_img))*2)-1
             self._dataset.append((lr_img, hr_img))
 
         print(' Initilazation done ')
 
     def __len__(self):
-        return (sys.maxsize)
+        return self._max_batchsize
 
     def transform(self, image):
         # Random right left transform
@@ -62,7 +63,9 @@ class EspcnDataset(chainer.dataset.DatasetMixin):
         '''
         return (LR, HR)
         '''
-        _, d, h, w = self._dataset[i][0].shape
+        pos = np.random.randint(0, len(self._dataset))
+        # Get HR img size
+        _, d, h, w = self._dataset[pos][1].shape
         x_s = np.random.randint(0, w-self._patch_side)
         x_e = x_s+self._patch_side
         y_s = np.random.randint(0, h-self._patch_side)
@@ -79,6 +82,6 @@ class EspcnDataset(chainer.dataset.DatasetMixin):
         lr_ze = lr_zs+self._lr_patch_side
 
         if not self._augmentation:
-            return self._dataset[i][0][:, lr_zs:lr_ze, lr_ys:lr_ye, lr_xs:lr_xe], self._dataset[i][1][:, z_s:z_e, y_s:y_e, x_s:x_e]
+            return self._dataset[pos][0][:, lr_zs:lr_ze, lr_ys:lr_ye, lr_xs:lr_xe], self._dataset[pos][1][:, z_s:z_e, y_s:y_e, x_s:x_e]
 
-        return self.transform(self._dataset[i][0][:, lr_zs:lr_ze, lr_ys:lr_ye, lr_xs:lr_xe]), self.transform(self._dataset[i][1][:, z_s:z_e, y_s:y_e, x_s:x_e])
+        return self.transform(self._dataset[pos][0][:, lr_zs:lr_ze, lr_ys:lr_ye, lr_xs:lr_xe]), self.transform(self._dataset[pos][1][:, z_s:z_e, y_s:y_e, x_s:x_e])
