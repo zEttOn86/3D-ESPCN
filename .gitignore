@@ -2,6 +2,7 @@
 *.npz
 *.mhd
 *.raw
+*.gz
 data/*
 data/raw/*
 data/external/*
