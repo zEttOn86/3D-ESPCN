@@ -4,7 +4,7 @@
 """
 import os, sys, time
 import argparse, glob
-
+import SimpleITK as sitk
 sys.path.append(os.path.normpath(os.path.join(os.path.dirname(os.path.abspath( __file__ )), '..')))
 import dataIO as IO
 
@@ -26,10 +26,15 @@ def main():
     os.makedirs(result_dir, exist_ok=True)
 
     for i, path in enumerate(path_list):
+        print('Data: {}'.format(path))
         img = IO.read_mhd_and_raw(path, False)
         #print('{}/{:04d}.mhd'.format(result_dir, i))
-        IO.write_mhd_and_raw(img, '{}/{:04d}.mhd'.format(result_dir, i))
-
+        # To make clean mhd file
+        output = sitk.GetArrayFromImage(img)
+        output = sitk.GetImageFromArray(output)
+        output.SetSpacing(img.GetSpacing())
+        output.SetOrigin([0,0,0])
+        sitk.WriteImage(output, '{}/{:04d}.mhd'.format(result_dir, i))
 
 
 if __name__ == '__main__':
