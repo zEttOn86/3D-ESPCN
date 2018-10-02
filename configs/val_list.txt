@@ -1,0 +1,3 @@
+data/processed/LR/0000.mhd	data/processed/HR/0000.mhd
+data/processed/LR/0006.mhd	data/processed/HR/0006.mhd
+data/processed/LR/0012.mhd	data/processed/HR/0012.mhd
