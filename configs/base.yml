@@ -1,0 +1,25 @@
+batchsize: 5
+iteration: 100000
+display_interval: 100
+snapshot_interval: 10000
+evaluation_interval: 5000
+upsampling_rate: 4
+
+patch:
+  patchside: 64
+
+network:
+  fn: model.py
+
+updater:
+  fn: updater.py
+
+adam:
+  alpha: 0.0001
+  beta1: 0.9
+  beta2: 0.999
+
+dataset:
+  training_fn: configs/training_list.txt
+  val_fn: configs/val_list.txt
+  test_fn: configs/test_list.txt
