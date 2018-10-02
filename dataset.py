@@ -14,8 +14,10 @@ class EspcnDataset(chainer.dataset.DatasetMixin):
         self._patch_side = patch_side
         self.upsampling_rate = upsampling_rate
         self._augmentation = augmentation
-        assert(self._patch_side%2==0)
 
+        assert(self._patch_side%2==0 and self._patch_side%self.upsampling_rate==0)
+
+        self._lr_patch_side = self._patch_side // self.upsampling_rate
         """
         * Read path to org and label data
         hogehoge.txt
@@ -67,7 +69,16 @@ class EspcnDataset(chainer.dataset.DatasetMixin):
         y_e = y_s+self._patch_side
         z_s = np.random.randint(0, d-self._patch_side)
         z_e = z_s+self._patch_side
-        if not self._augmentation:
-            return self._dataset[i][0][:, z_s:z_e, y_s:y_e, x_s:x_e], self._dataset[i][1][:, z_s:z_e, y_s:y_e, x_s:x_e]
 
-        return self.transform(self._dataset[i][0][:, z_s:z_e, y_s:y_e, x_s:x_e]), self.transform(self._dataset[i][1][:, z_s:z_e, y_s:y_e, x_s:x_e])
+        # Nearest Neaighbor
+        lr_xs = int(x_s/self.upsampling_rate+0.5)
+        lr_xe = lr_xs+self._lr_patch_side
+        lr_ys = int(y_s/self.upsampling_rate+0.5)
+        lr_ye = lr_ys+self._lr_patch_side
+        lr_zs = int(z_s/self.upsampling_rate+0.5)
+        lr_ze = lr_zs+self._lr_patch_side
+
+        if not self._augmentation:
+            return self._dataset[i][0][:, lr_zs:lr_ze, lr_ys:lr_ye, lr_xs:lr_xe], self._dataset[i][1][:, z_s:z_e, y_s:y_e, x_s:x_e]
+
+        return self.transform(self._dataset[i][0][:, lr_zs:lr_ze, lr_ys:lr_ye, lr_xs:lr_xe]), self.transform(self._dataset[i][1][:, z_s:z_e, y_s:y_e, x_s:x_e])
