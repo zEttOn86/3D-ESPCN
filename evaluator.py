@@ -1,5 +1,6 @@
 #coding:utf-8
 import os, sys, time
+import copy
 import numpy as np
 import chainer
 import chainer.links as L
@@ -7,6 +8,7 @@ import chainer.functions as F
 from chainer.dataset import concat_examples
 from chainer.dataset import iterator as iterator_module
 from chainer.dataset import concat_examples
+from chainer import reporter
 
 class EspcnEvaluator(chainer.training.extensions.Evaluator):
     def __init__(self, iterator, gen, num_of_calc=10, converter=concat_examples, device=None, eval_hook=None):
