@@ -75,12 +75,38 @@ The difference between original paper and this as follow:
 
     - Training result
 
-      ![Figure2](assets/img/gen_loss.png)
+      ![Figure4](assets/img/gen_loss.png)
 
-4. Infer HR image
-
-    ```
+4. Infer HR images and evaluate infered HR images in terms of PSNR and SSIM.
 
     ```
+    python inference.py -g 0 -m results\training\gen_iter_100000.npz
+    ```
 
-5. Evaluations using PSNR and SSIM
+    - Inference results
+
+      |Case|PSNR[dB]|SSIM|
+      |:---:|:---:|:---:|
+      |0014.mhd|24.4|0.303|
+      |0001.mhd|26.2|0.390|
+      |0015.mhd|30.2|0.459|
+
+    - Example of ground truth (0015.mhd)
+
+      ![Figure5](assets\img\ground_truth.png)
+
+    - Example of input LR image (0015.mhd)
+
+      ![Figure6](assets\img\input_LR.png)
+
+    - Example of infered HR image (0015.mhd)
+
+      ![Figure7](assets\img\infer_HR.png)
+
+### My opinion
+
+- I think I cant reconstruct detail of image, e.g. texture :sob:
+
+- If you use this implementation, you should optimize this model for your task.
+
+- Note that this is just my hobby. So, please dont care this results. :smile_cat:
