@@ -3,9 +3,13 @@ import argparse, yaml, shutil, math
 import numpy as np
 import chainer
 import SimpleITK as sitk
+import pandas as pd
+from skimage.measure import compare_ssim as ssim
+from skimage.measure import compare_psnr as psnr
 
 from model import ESPCN
 import util.yaml_utils as yaml_utils
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -46,6 +50,9 @@ def main():
             if not line : continue
             path_pairs.append(line[:])
 
+    case_list = []
+    ssim_list = []
+    psnr_list = []
     for i in path_pairs:
         print('   LR from: {}'.format(i[0]))
         print('   HR from: {}'.format(i[1]))
@@ -99,6 +106,23 @@ def main():
             os.makedirs(result_dir)
         fn = os.path.splitext(os.path.basename(i[0]))[0]
         sitk.WriteImage(inferenceHrImage, '{}/{}.mhd'.format(result_dir, fn))
+
+        # Calc metric
+        case_list.append(os.path.basename(i[0]))
+        # PSNR
+        sitkHR = sitk.ReadImage(os.path.join(args.root, i[1]))
+        hr_gt = sitk.GetArrayFromImage(sitkHR).astype("float")
+
+        psnr_const = psnr(hr_gt, hr_map, dynamic_range =np.amax(hr_gt)-np.amin(hr_gt))
+        print('PSNR: {}'.format(psnr_const))
+        psnr_list.append(psnr_const)
+        # SSIM
+        ssim_const=ssim(hr_gt, hr_map, dynamic_range =np.amax(hr_gt)-np.amin(hr_gt),gaussian_weights=True,use_sample_covariance=False)
+        print('SSIM: {}'.format(ssim_const))
+        ssim_list.append(ssim_const)
+
+    df = pd.DataFrame({'Case':case_list, 'PSNR':psnr_list, 'SSIM':ssim_list})
+    df.to_csv('{}/result.csv'.format(result_dir), index=False, encoding="utf-8", mode='w')
 
 
 if __name__ == '__main__':
