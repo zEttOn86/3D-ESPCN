@@ -131,7 +131,7 @@ def main():
     trainer.extend(EspcnEvaluator(val_iter, gen, device=args.gpu), trigger=evaluation_interval)
     # Linear shift
     ext_opt_gen = extensions.LinearShift('alpha', (config.adam['alpha'], 0.),
-                                         (config.iteration_decay_start, config.iteration), opt_gen)
+                                         (config.iteration_decay_start, config.iteration), gen_opt)
     trainer.extend(ext_opt_gen)
 
     # Save two plot images to the result dir
