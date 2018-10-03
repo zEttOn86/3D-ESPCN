@@ -40,11 +40,11 @@ class EspcnDataset(chainer.dataset.DatasetMixin):
             print('   HR from: {}'.format(i[1]))
             # Read data
             lr_img = IO.read_mhd_and_raw(os.path.join(self._root, i[0])).astype("float32")
-            #(z, y, x) -> (ch, z, y, x) and norm [0, 1]
-            lr_img = (lr_img[np.newaxis, :] - np.amin(lr_img)) / (np.amax(lr_img)- np.amin(lr_img))
+            #(z, y, x) -> (ch, z, y, x)
+            lr_img = lr_img[np.newaxis, :]
 
             hr_img = IO.read_mhd_and_raw(os.path.join(self._root, i[1])).astype("float32")
-            hr_img = ((hr_img[np.newaxis, :] - np.amin(hr_img)) / (np.amax(hr_img)- np.amin(hr_img))*2)-1
+            hr_img = hr_img[np.newaxis, :]
             self._dataset.append((lr_img, hr_img))
 
         print(' Initilazation done ')
