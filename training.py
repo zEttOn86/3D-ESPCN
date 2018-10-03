@@ -54,7 +54,7 @@ def main():
     print ("load the dataset")
     train = EspcnDataset(args.root,
                         os.path.join(args.base, config.dataset['training_fn']),
-                        config.patch['patchside'], config.upsampling_rate)
+                        config.patch['patchside'], config.upsampling_rate, augmentation=True)
     train_iter = chainer.iterators.SerialIterator(train, batch_size=config.batchsize)
 
     val = EspcnDataset(args.root,
@@ -129,6 +129,10 @@ def main():
     trainer.extend(extensions.ProgressBar(update_interval=10))
     # Evaluate the model with the test dataset for each epoch
     trainer.extend(EspcnEvaluator(val_iter, gen, device=args.gpu), trigger=evaluation_interval)
+    # Linear shift
+    ext_opt_gen = extensions.LinearShift('alpha', (config.adam['alpha'], 0.),
+                                         (config.iteration_decay_start, config.iteration), opt_gen)
+    trainer.extend(ext_opt_gen)
 
     # Save two plot images to the result dir
     if extensions.PlotReport.available():
