@@ -20,7 +20,7 @@ The difference between original paper and this as follow:
 
   I think this is correct definition.
 
-  <img src="https://latex.codecogs.com/gif.latex?\begin{align*}&space;S(F)_{i,j,k,c}&space;=&space;F_{[\frac{i}{r}],[\frac{j}{r}][\frac{k}{r}],(r^3-1)c&plus;mod(i,r)&plus;r&space;\cdot&space;mod(j,r)&plus;r^2&space;\cdot&space;mod(k,r)}&space;\end{align*}" />
+  <img src="https://latex.codecogs.com/gif.latex?\begin{align*}&space;S(F)_{i,j,k,c}&space;=&space;F_{[\frac{i}{r}],[\frac{j}{r}][\frac{k}{r}],(r^3-1)c&plus;mod(i,r)&plus;r&space;\cdot&space;mod(j,r)&plus;r^2&space;\cdot&space;mod(k,r)}&space;\end{align*}" width="5000">
 
   F: input feature map
 
@@ -93,15 +93,15 @@ The difference between original paper and this as follow:
 
     - Example of ground truth (0015.mhd)
 
-      ![Figure5](assets\img\ground_truth.png)
+      ![Figure5](assets/img/ground_truth.png)
 
     - Example of input LR image (0015.mhd)
 
-      ![Figure6](assets\img\input_LR.png)
+      ![Figure6](assets/img/input_LR.png)
 
     - Example of infered HR image (0015.mhd)
 
-      ![Figure7](assets\img\infer_HR.png)
+      ![Figure7](assets/img/infer_HR.png)
 
 ### My opinion
 
