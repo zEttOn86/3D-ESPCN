@@ -52,11 +52,11 @@ class EspcnDataset(chainer.dataset.DatasetMixin):
     def __len__(self):
         return self._max_batchsize
 
-    def transform(self, image):
+    def transform(self, img):
         # Random right left transform
         if np.random.rand() > 0.5:
             img = img[:, ::-1, ::-1, ::-1]
-        img += np.random.uniform(size=img.shape, low=0, high=1./128)
+        #img += np.random.uniform(size=img.shape, low=0, high=1./128)
         return img
 
     def get_example(self, i):
