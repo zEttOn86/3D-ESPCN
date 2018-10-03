@@ -58,6 +58,15 @@ The difference between original paper and this as follow:
     python util\miscs\make_lr_img.py
     ```
 
+    - LR image sample (x1/4)
+
+    ![Figure2](assets/img/LR_image_sample.png)
+
+    - HR image sample
+
+    ![Figure3](assets/img/HR_image_sample.png)
+
+
 3. Train model
 
     ```
@@ -66,9 +75,9 @@ The difference between original paper and this as follow:
 
     - Training result
 
+      ![Figure2](assets/img/gen_loss.png)
 
-
-4. Reconstruct HR image
+4. Infer HR image
 
     ```
 
