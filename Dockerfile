@@ -1,6 +1,6 @@
 # FROM は Docker に対して基となるイメージを伝えます
 # BEAR用
-FROM nvidia/cuda:8.0-cudnn6-devel
+FROM nvidia/cuda:9.1-cudnn7-devel
 
 # RUN 命令はイメージの中で実行するコマンドを指示．RUNはなるべく，ワンラインで書くこと
 RUN apt-get update -y && \
@@ -13,7 +13,7 @@ RUN apt-get update -y && \
     rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
 RUN pip3 install --no-cache-dir \
-    cupy-cuda80 \
+    cupy-cuda91 \
     chainer \
     matplotlib \
     scipy \
