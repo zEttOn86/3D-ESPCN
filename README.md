@@ -1,4 +1,4 @@
-### 3D Efficient Subpixel-shifted Convolutional Network (3D-ESPCN)
+# 3D Efficient Subpixel-shifted Convolutional Network (3D-ESPCN)
 
 This chainer implementation is based on "Tanno R. et al. (2017) Bayesian Image Quality Transfer with CNNs: Exploring Uncertainty in dMRI Super-Resolution. In: Descoteaux M., Maier-Hein L., Franz A., Jannin P., Collins D., Duchesne S. (eds) Medical Image Computing and Computer Assisted Intervention − MICCAI 2017. Lecture Notes in Computer Science, vol 10433. Springer, Cham".
 
@@ -14,7 +14,25 @@ The difference between original paper and this as follow:
 
   - Network architecture
 
-#### Requirements
+    ![Figure1](assets/img/figure1.png)
+
+- Definition of pixel shuffler
+
+  I think this is correct definition.
+
+  <img src="https://latex.codecogs.com/gif.latex?\begin{align*}&space;S(F)_{i,j,k,c}&space;=&space;F_{[\frac{i}{r}],[\frac{j}{r}][\frac{k}{r}],(r^3-1)c&plus;mod(i,r)&plus;r&space;\cdot&space;mod(j,r)&plus;r^2&space;\cdot&space;mod(k,r)}&space;\end{align*}" />
+
+  F: input feature map
+
+  c: number of output image channel
+
+  S: Pixel shuffler
+
+  i, j, k, c: coordinate in output image
+
+  r: upsampling rate
+
+## Requirements
 
 - chainer
 
@@ -24,7 +42,7 @@ The difference between original paper and this as follow:
 
 - pyyaml
 
-#### How to use
+## How to use
 
 1. Download dataset [here](https://openneuro.org/datasets/ds000001/versions/00006).
 
@@ -40,14 +58,20 @@ The difference between original paper and this as follow:
     python util\miscs\make_lr_img.py
     ```
 
-3. Training model
+3. Train model
 
     ```
     python training.py -g 0
     ```
 
+    - Training result
+
+
+
 4. Reconstruct HR image
 
     ```
-    
+
     ```
+
+5. Evaluations using PSNR and SSIM
