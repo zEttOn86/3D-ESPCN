@@ -20,7 +20,7 @@ The difference between original paper and this as follow:
 
   I think this is correct definition.
 
-  <img src="https://latex.codecogs.com/gif.latex?\begin{align*}&space;S(F)_{i,j,k,c}&space;=&space;F_{[\frac{i}{r}],[\frac{j}{r}][\frac{k}{r}],(r^3-1)c&plus;mod(i,r)&plus;r&space;\cdot&space;mod(j,r)&plus;r^2&space;\cdot&space;mod(k,r)}&space;\end{align*}" width="5000">
+  <img src="https://latex.codecogs.com/gif.latex?\huge&space;\begin{align*}&space;S(F)_{i,j,k,c}=F_{[\frac{i}{r}],[\frac{j}{r}],[\frac{k}{r}],(r^3-1)c&plus;mod(i,r)&plus;r&space;\cdot&space;mod(j,r)&plus;&space;r^2&space;\cdot&space;mod(k,r)}&space;\end{align*}">
 
   F: input feature map
 
