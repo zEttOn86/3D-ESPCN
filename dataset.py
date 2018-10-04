@@ -52,12 +52,13 @@ class EspcnDataset(chainer.dataset.DatasetMixin):
     def __len__(self):
         return self._max_batchsize
 
-    def transform(self, img):
+    def transform(self, img1, img2):
         # Random right left transform
         if np.random.rand() > 0.5:
-            img = img[:, ::-1, ::-1, ::-1]
-        #img += np.random.uniform(size=img.shape, low=0, high=1./128)
-        return img
+            img1 = img1[:, ::-1, ::-1, ::-1]
+            img2 = img2[:, ::-1, ::-1, ::-1]
+        #img += np.random.uniform(size=img1.shape, low=0, high=1./128)
+        return img1, img2
 
     def get_example(self, i):
         '''
@@ -84,4 +85,4 @@ class EspcnDataset(chainer.dataset.DatasetMixin):
         if not self._augmentation:
             return self._dataset[pos][0][:, lr_zs:lr_ze, lr_ys:lr_ye, lr_xs:lr_xe], self._dataset[pos][1][:, z_s:z_e, y_s:y_e, x_s:x_e]
 
-        return self.transform(self._dataset[pos][0][:, lr_zs:lr_ze, lr_ys:lr_ye, lr_xs:lr_xe]), self.transform(self._dataset[pos][1][:, z_s:z_e, y_s:y_e, x_s:x_e])
+        return self.transform(self._dataset[pos][0][:, lr_zs:lr_ze, lr_ys:lr_ye, lr_xs:lr_xe], self._dataset[pos][1][:, z_s:z_e, y_s:y_e, x_s:x_e])
