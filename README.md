@@ -87,9 +87,9 @@ The difference between original paper and this as follow:
 
       |Case|PSNR[dB]|SSIM|
       |:---:|:---:|:---:|
-      |0014.mhd|24.4|0.303|
-      |0001.mhd|26.2|0.390|
-      |0015.mhd|30.2|0.459|
+      |0014.mhd|29.4|0.789|
+      |0001.mhd|30.0|0.767|
+      |0015.mhd|34.7|0.852|
 
     - Example of ground truth (0015.mhd)
 
