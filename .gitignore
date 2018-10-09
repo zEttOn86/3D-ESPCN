@@ -3,7 +3,7 @@
 *.mhd
 *.raw
 *.gz
-data/*
+#data/*
 data/raw/*
 data/external/*
 data/interim/*
